@@ -96,11 +96,11 @@
 -- Drop existing tables, so you'll start fresh each time this script is run.
 -- Include DROP TABLE IF EXISTS statements for each
 --   table, so that each run of this script starts with a blank database.
-DROP TABLE IF EXISTS studio;
-DROP TABLE IF EXISTS movie;
 DROP TABLE IF EXISTS character;
 DROP TABLE IF EXISTS actor;
 DROP TABLE IF EXISTS agent;
+DROP TABLE IF EXISTS movie;
+DROP TABLE IF EXISTS studio;
 
 -- Create new tables, according to your domain model
 -- Implementation of the ERD via CREATE TABLE statements for each
@@ -176,48 +176,108 @@ VALUES (2, 'The Dark Knight', 2008, 'PG-13', 1);
 INSERT INTO movie (id, title, year_released, mpaa_rating, studio_id)
 VALUES (3, 'The Dark Knight Rises', 2012, 'PG-13', 1);
 
+SELECT
+    movie.title,
+    movie.year_released,
+    movie.mpaa_rating,
+    studio.name
+FROM movie
+JOIN studio ON movie.studio_id = studio.id
+ORDER BY movie.year_released;
+    
 
+
+
+-- AGENT
+-- Inserting data into the agent table
+INSERT INTO agent (id, name)
+VALUES (1, 'Amazing Agent');
+
+INSERT INTO agent (id, name)
+VALUES (2, 'Terrible Agent');
+
+UPDATE agent
+SET name = 'The BEST Agent'
+WHERE id = 1;
 
 -- ACTOR
 -- Inserting data into the actor table:
-INSERT INTO actor (id, name)
-VALUES (1, 'Christian Bale');
+INSERT INTO actor (id, name, agent_id)
+VALUES (1, 'Christian Bale', 1);
 
-INSERT INTO actor (id, name)
-VALUES (2, 'Michael Caine');
+INSERT INTO actor (id, name, agent_id)
+VALUES (2, 'Michael Caine', 2);
 
-INSERT INTO actor (id, name)
-VALUES (3, 'Liam Neeson');
+INSERT INTO actor (id, name, agent_id)
+VALUES (3, 'Liam Neeson', 2);
 
-INSERT INTO actor (id, name)
-VALUES (4, 'Katie Holmes');
+INSERT INTO actor (id, name, agent_id)
+VALUES (4, 'Katie Holmes', 2);
 
-INSERT INTO actor (id, name)
-VALUES (5, 'Gary Oldman');
+INSERT INTO actor (id, name, agent_id)
+VALUES (5, 'Gary Oldman', 2);
 
-INSERT INTO actor (id, name)
-VALUES (6, 'Heath Ledger');
+INSERT INTO actor (id, name, agent_id)
+VALUES (6, 'Heath Ledger', 2);
 
-INSERT INTO actor (id, name)
-VALUES (7, 'Aaron Eckhart');
+INSERT INTO actor (id, name, agent_id)
+VALUES (7, 'Aaron Eckhart', 2);
 
-INSERT INTO actor (id, name)
-VALUES (8, 'Maggie Gyllenhaal');
+INSERT INTO actor (id, name, agent_id)
+VALUES (8, 'Maggie Gyllenhaal', 2);
 
-INSERT INTO actor (id, name)
-VALUES (9, 'Tom Hardy');
+INSERT INTO actor (id, name, agent_id)
+VALUES (9, 'Tom Hardy', 2);
 
-INSERT INTO actor (id, name)
-VALUES (10, 'Joseph Gordon-Levitt');
+INSERT INTO actor (id, name, agent_id)
+VALUES (10, 'Joseph Gordon-Levitt', 2);
 
-INSERT INTO actor (id, name)
-VALUES (11, 'Anne Hathaway');
+INSERT INTO actor (id, name, agent_id)
+VALUES (11, 'Anne Hathaway', 2);
 
 -- CHARACTER
 -- Inserting data into the character table:
 INSERT INTO character (id, name, actor_id, movie_id)
-VALUES (1, Bruce Wayne, 1, )
+VALUES (1, 'Bruce Wayne', 1, 1);
 
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (2, 'Alfred', 2, 1);
+
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (3, 'Ra''s Al Ghul', 3, 1);
+
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (4, 'Rachel Dawes', 4, 1);
+
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (5, 'Commissioner Gordon', 5, 1);
+
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (6, 'Bruce Wayne', 1, 2);
+
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (7, 'Joker', 6, 2);
+
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (8, 'Harvey Dent', 7, 2);
+
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (9, 'Alfred', 2, 2);
+
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (10, 'Rachel Dawes', 8, 2);
+
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (11, 'Commissioner Gordon', 5, 3);
+
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (12, 'Bane', 9, 3);
+
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (13, 'John Blake', 10, 3);
+
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (14, 'Selina Kyle', 11, 3);
 
 -- Prints a header for the cast output
 .print ""
@@ -225,44 +285,52 @@ VALUES (1, Bruce Wayne, 1, )
 .print "========"
 .print ""
 
--- Example output:
--- Top Cast
--- ========
--- Batman Begins          Christian Bale        Bruce Wayne
--- Batman Begins          Michael Caine         Alfred
--- Batman Begins          Liam Neeson           Ra's Al Ghul
--- Batman Begins          Katie Holmes          Rachel Dawes
--- Batman Begins          Gary Oldman           Commissioner Gordon
--- The Dark Knight        Christian Bale        Bruce Wayne
--- The Dark Knight        Heath Ledger          Joker
--- The Dark Knight        Aaron Eckhart         Harvey Dent
--- The Dark Knight        Michael Caine         Alfred
--- The Dark Knight        Maggie Gyllenhaal     Rachel Dawes
--- The Dark Knight Rises  Christian Bale        Bruce Wayne
--- The Dark Knight Rises  Gary Oldman           Commissioner Gordon
--- The Dark Knight Rises  Tom Hardy             Bane
--- The Dark Knight Rises  Joseph Gordon-Levitt  John Blake
--- The Dark Knight Rises  Anne Hathaway         Selina Kyle
+SELECT
+    movie.title,
+    actor.name,
+    character.name
+FROM character
+JOIN movie on character.movie_id = movie.id
+JOIN actor on character.actor_id = actor.id
+ORDER BY movie.title;
+
+-- -- Example output:
+-- -- Top Cast
+-- -- ========
+-- -- Batman Begins          Christian Bale        Bruce Wayne
+-- -- Batman Begins          Michael Caine         Alfred
+-- -- Batman Begins          Liam Neeson           Ra's Al Ghul
+-- -- Batman Begins          Katie Holmes          Rachel Dawes
+-- -- Batman Begins          Gary Oldman           Commissioner Gordon
+-- -- The Dark Knight        Christian Bale        Bruce Wayne
+-- -- The Dark Knight        Heath Ledger          Joker
+-- -- The Dark Knight        Aaron Eckhart         Harvey Dent
+-- -- The Dark Knight        Michael Caine         Alfred
+-- -- The Dark Knight        Maggie Gyllenhaal     Rachel Dawes
+-- -- The Dark Knight Rises  Christian Bale        Bruce Wayne
+-- -- The Dark Knight Rises  Gary Oldman           Commissioner Gordon
+-- -- The Dark Knight Rises  Tom Hardy             Bane
+-- -- The Dark Knight Rises  Joseph Gordon-Levitt  John Blake
+-- -- The Dark Knight Rises  Anne Hathaway         Selina Kyle
 
 
 
 
--- AGENT'S LIST OF REPRESENTED ACTORS
+
+
+-- -- Example output:
+-- -- Represented by agent
+-- -- ====================
+-- -- Christian Bale
+
 -- Prints a header for the agent's list of represented actors
 .print ""
 .print "Represented by agent"
 .print "===================="
 .print ""
 
--- ***TODO!***
--- The SQL statement for the represented actor(s) output goes here.
-
--- Example output:
--- Represented by agent
--- ====================
--- Christian Bale
-
--- AGENT
--- Inserting data into the agent table
-INSERT INTO movie (id, name)
-VALUES (1, 'Agent1');
+SELECT
+    actor.name
+FROM actor
+JOIN agent ON actor.agent_id = agent.id
+WHERE agent.name = 'The BEST Agent';
