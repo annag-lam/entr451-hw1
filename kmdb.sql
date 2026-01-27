@@ -94,23 +94,66 @@
 .headers off
 
 -- Drop existing tables, so you'll start fresh each time this script is run.
--- TODO!
+-- Include DROP TABLE IF EXISTS statements for each
+--   table, so that each run of this script starts with a blank database.
+DROP TABLE IF EXISTS studio;
+DROP TABLE IF EXISTS movie;
+DROP TABLE IF EXISTS character;
+DROP TABLE IF EXISTS actor;
+DROP TABLE IF EXISTS agent;
 
 -- Create new tables, according to your domain model
--- TODO!
+-- Implementation of the ERD via CREATE TABLE statements for each
+--   model/table.
+CREATE TABLE studio (
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+
+CREATE TABLE movie (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    year_released INTEGER,
+    mpaa_rating TEXT,
+    studio_id INTEGER,
+    FOREIGN KEY (studio_id) REFERENCES studio(id)
+);
+
+CREATE TABLE agent (
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+
+CREATE TABLE actor (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    agent_id INTEGER,
+    FOREIGN KEY (agent_id) REFERENCES agent(id)
+);
+
+CREATE TABLE character (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    actor_id INTEGER,
+    movie_id INTEGER,
+    FOREIGN KEY (actor_id) REFERENCES actor(id),
+    FOREIGN KEY (movie_id) REFERENCES movie(id)
+);
 
 -- Insert data into your database that reflects the sample data shown above
 -- Use hard-coded foreign key IDs when necessary
--- TODO!
 
--- Prints a header for the movies output
-.print "Movies"
-.print "======"
-.print ""
 
--- ***TODO!***
--- The SQL statement for the movies output goes here.
+-- STUDIO
+-- Inserting data into studio table
+INSERT INTO studio (id, name)
+VALUES (1, 'Warner Bros.');
 
+
+
+
+
+-- MOVIES
 -- Example output:
 -- Movies
 -- ======
@@ -118,14 +161,69 @@
 -- The Dark Knight        2008           PG-13  Warner Bros.
 -- The Dark Knight Rises  2012           PG-13  Warner Bros.
 
+-- Prints a header for the movies output
+.print "Movies"
+.print "======"
+.print ""
+
+-- Inserting data into movie table: one INSERT statements for each of the 3 movies
+INSERT INTO movie (id, title, year_released, mpaa_rating, studio_id)
+VALUES (1, 'Batman Begins', 2005, 'PG-13', 1);
+
+INSERT INTO movie (id, title, year_released, mpaa_rating, studio_id)
+VALUES (2, 'The Dark Knight', 2008, 'PG-13', 1);
+
+INSERT INTO movie (id, title, year_released, mpaa_rating, studio_id)
+VALUES (3, 'The Dark Knight Rises', 2012, 'PG-13', 1);
+
+
+
+-- ACTOR
+-- Inserting data into the actor table:
+INSERT INTO actor (id, name)
+VALUES (1, 'Christian Bale');
+
+INSERT INTO actor (id, name)
+VALUES (2, 'Michael Caine');
+
+INSERT INTO actor (id, name)
+VALUES (3, 'Liam Neeson');
+
+INSERT INTO actor (id, name)
+VALUES (4, 'Katie Holmes');
+
+INSERT INTO actor (id, name)
+VALUES (5, 'Gary Oldman');
+
+INSERT INTO actor (id, name)
+VALUES (6, 'Heath Ledger');
+
+INSERT INTO actor (id, name)
+VALUES (7, 'Aaron Eckhart');
+
+INSERT INTO actor (id, name)
+VALUES (8, 'Maggie Gyllenhaal');
+
+INSERT INTO actor (id, name)
+VALUES (9, 'Tom Hardy');
+
+INSERT INTO actor (id, name)
+VALUES (10, 'Joseph Gordon-Levitt');
+
+INSERT INTO actor (id, name)
+VALUES (11, 'Anne Hathaway');
+
+-- CHARACTER
+-- Inserting data into the character table:
+INSERT INTO character (id, name, actor_id, movie_id)
+VALUES (1, Bruce Wayne, 1, )
+
+
 -- Prints a header for the cast output
 .print ""
 .print "Top Cast"
 .print "========"
 .print ""
-
--- ***TODO!***
--- The SQL statement for the cast output goes here.
 
 -- Example output:
 -- Top Cast
@@ -146,6 +244,10 @@
 -- The Dark Knight Rises  Joseph Gordon-Levitt  John Blake
 -- The Dark Knight Rises  Anne Hathaway         Selina Kyle
 
+
+
+
+-- AGENT'S LIST OF REPRESENTED ACTORS
 -- Prints a header for the agent's list of represented actors
 .print ""
 .print "Represented by agent"
@@ -159,3 +261,8 @@
 -- Represented by agent
 -- ====================
 -- Christian Bale
+
+-- AGENT
+-- Inserting data into the agent table
+INSERT INTO movie (id, name)
+VALUES (1, 'Agent1');
